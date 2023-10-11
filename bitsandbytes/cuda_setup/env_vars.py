@@ -19,6 +19,7 @@ def to_be_ignored(env_var: str, value: str) -> bool:
         "PATH",  # this is for finding binaries, not libraries
         "LESSOPEN",  # related to the `less` command
         "LESSCLOSE",
+        "GOOGLE_VM_CONFIG_LOCK_FILE",
         "_",  # current Python interpreter
     }
     return env_var in ignorable
@@ -38,9 +39,9 @@ def is_other_conda_env_var(env_var: str) -> bool:
 
 def is_relevant_candidate_env_var(env_var: str, value: str) -> bool:
     return is_active_conda_env(env_var) or (
-        might_contain_a_path(value) and not
-        is_other_conda_env_var(env_var) and not
-        to_be_ignored(env_var, value)
+        might_contain_a_path(value)
+        and not is_other_conda_env_var(env_var)
+        and not to_be_ignored(env_var, value)
     )
 
 
